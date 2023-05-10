@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -32,11 +34,20 @@ class ProductController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Ajouter au caddie
+     * Verifier l'existence du produit
+     * Mettre à jour les quantité
      */
+
     public function addToCart(Product $product)
     {
-        //
+        //on verifie l'existence du produit dans le panier
+        //Select * from Cart where user_id = ? AND product_id = $product->id->limit(0,1)
+
+        $cart = Cart::where('user_id',Auth::user()->id)
+                    ->where('product_id',$product->id)
+                    ->limit(1)->get();
+        dd($cart) ;
 
     }
 
